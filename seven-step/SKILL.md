@@ -33,7 +33,7 @@ description: 7步开发工作流——从需求追问到代码发布。当用户
 步骤2: 规格
   工具: /opsx:propose
   输入: 步骤1的需求理解
-  规则: 开始前先问用户「openspec 输出到哪个目录？」（默认当前 cwd），记录到 todolist.md 顶部
+  规则: 开始前先问用户「openspec 输出到哪个目录？」（默认 /openspec），记录到 todolist.md 顶部
   输出: <用户指定目录>/openspec/changes/<name>/ 下的规格文档
   完成: proposal.md 存在
 
@@ -125,7 +125,7 @@ description: 7步开发工作流——从需求追问到代码发布。当用户
 | 步骤 | 触发条件 | 一线修复 | 仍失败兜底 |
 |------|---------|---------|-----------|
 | 1. 追问 | 需求模糊 | 追问直到清晰 | 超过3轮无结论 → 列出待澄清项让用户逐条确认 |
-| 2. 规格 | OpenSpec 命令不可用 | 尝试 `npx @fission-ai/openspec` 确认安装 | 手动创建 `openspec/changes/<name>/`，手写 proposal.md |
+| 2. 规格 | OpenSpec 命令不可用或项目未 init | 执行 `/seven-step-setup 检查依赖`，安装缺失依赖后 `openspec init --tools claude` | 手动创建 `openspec/changes/<name>/`，手写 proposal.md |
 | 3. 设计 | 方案分歧大 | 列2个对比方案优劣，让用户选 | 用户不选 → 默认简单方案，记录理由到 todolist.md |
 | 4. 拆分 | 任务粒度过大 | 继续拆到每项 ≤5 分钟、单文件可完成 | 仍过大 → 标记需人工拆分 |
 | 5. 编码 | 测试写不出 | 先写最小实现让测试通过 | 再逐步加边界，每加一个跑全量；非代码任务跳过 |
