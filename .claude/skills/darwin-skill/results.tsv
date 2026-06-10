@@ -1,5 +1,0 @@
-timestamp	commit	skill	old_score	new_score	status	dimension	note	eval_mode
-2026-06-10T00:00	baseline	seven-step	-	66.8	baseline	-	结构评分：dim1=9 dim2=9 dim3=8 dim4=9 dim5=9 dim6=8 dim7=9 dim9=9 dim8=待实测	structural_only
-2026-06-10T00:00	baseline	seven-step-setup	-	66.6	baseline	-	结构评分：dim1=9 dim2=9 dim3=8 dim4=8 dim5=9 dim6=9 dim7=9 dim9=9 dim8=待实测	structural_only
-2026-06-10T00:00	round1	seven-step	66.8	68.0	keep	dim3	失败处理表二段→三段，dim3 8→9	structural_only
-2026-06-10T00:00	round1	seven-step-setup	66.6	68.4	keep	dim3+dim4	失败处理表二段→三段 + 兜底加🔴CHECKPOINT，dim3 8→9 dim4 8→9	structural_only
