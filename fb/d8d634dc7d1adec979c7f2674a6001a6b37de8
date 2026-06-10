@@ -1,0 +1,30 @@
+seven-step-setup/SKILL.md
+  956abe8926489995 20-23
+seven-step/gf/SKILL.md
+  956abe8926489995 196,198-201
+.claude/skills/darwin-skill/results.tsv
+  956abe8926489995 1-5
+seven-step/SKILL.md
+  956abe8926489995 51,53-54,117-125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "fbd8d634dc7d1adec979c7f2674a6001a6b37de8",
+  "prompts": {
+    "956abe8926489995": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a31dd41e-229a-452c-ad13-d6a3ab3c33cc",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "huahai",
+      "messages": [],
+      "total_additions": 27,
+      "total_deletions": 83,
+      "accepted_lines": 27,
+      "overriden_lines": 0,
+      "messages_url": "https://git-ai.hsjdata.com/cas/273808b12279a010fd89c89a85dc51bee6bd0fb68124a52b514a74ceec9c4c60"
+    }
+  }
+}
