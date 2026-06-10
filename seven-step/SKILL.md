@@ -1,133 +1,136 @@
 ---
 name: seven-step
-description: 7步工作流 — 从追问到发布的完整开发链路。内置 gf git 流程管理。AI启动时自动加载，每个对话都必须遵守。
+description: 7步开发工作流——从需求追问到代码发布。当用户提出开发任务、新功能、/seven-step 时，必须使用此skill来编排工作流程。内置gf git流程管理、CHECKPOINT门禁、todolist进度追踪。
 ---
 
 # 7 步工作流
 
 > superpowers 管思考，OpenSpec 管规格，Matt Pocock 管追问，内置命令管审查。
 
-## 开工铁律
+## 🧭 启动决策树（读到本 skill 后第一件事）
 
-**AI 在说任何话之前，必须先读项目根目录的 `todolist.md`。**
-
-1. 读到 → 检查"当前步骤" → 从该步骤开始，不得跳步
-2. 没读到 → 在项目根目录创建 `todolist.md`，并确保 `todolist.md` 已加入 `.gitignore`，然后询问用户："要开始新功能吗？还是继续之前的工作？"
-3. 上一步未完成时跳过它直接写代码 = 违规
+```
+读 todolist.md
+├─ 不存在 ──→ 从步骤1开始（不创建 todolist）
+├─ 存在 + 有未勾选任务 ──→ 跳到对应步骤继续
+└─ 存在 + 全部已勾选
+   ├─ 已归档（git log 含 archive）──→ 删除 todolist.md，问"新功能？"→ 步骤1
+   └─ 未归档 ──→ 提示用户先执行步骤7归档
+```
 
 ## 7 步链路
 
+每一步都有明确的 **输入 → 工具 → 输出 → 完成标志**。
+
 ```
-步骤1: 追问  → grill-with-docs                "基于文档追问，对齐理解"
-步骤2: 规格  → /opsx:propose                  "写成规格文档"
-步骤3: 设计  → superpowers:brainstorming      "技术怎么实现？"
-      🔴 CHECKPOINT: 展示方案 → 等待人类确认 → 继续
-步骤4: 拆分  → superpowers:writing-plans      "拆成几步？"
-步骤5: 编码  → superpowers:test-driven-development  "RED → GREEN → REFACTOR"
-步骤6: 审查  → /review + /security-review      "代码对不对？安全吗？"
-      🔴 CHECKPOINT: 检查清单全通过才能 commit
-步骤7: 发布  → gf + /opsx:archive              "提交 + 归档"
+步骤1: 追问
+  工具: grill-with-docs
+  输入: 用户需求描述
+  输出: 澄清后的需求理解
+  完成: 用户确认需求无误
+
+步骤2: 规格
+  工具: /opsx:propose
+  输入: 步骤1的需求理解
+  输出: openspec/changes/<name>/ 下的规格文档
+  完成: proposal.md 存在
+
+步骤3: 设计
+  工具: superpowers:brainstorming
+  输入: 步骤2的规格文档
+  输出: 技术方案
+  完成: 🔴 CHECKPOINT — 展示方案，等待用户确认
+
+步骤4: 拆分
+  工具: superpowers:writing-plans
+  输入: 确认后的方案
+  输出: /plan 目录下的实施计划 + todolist.md（从计划中提取可勾选清单）
+  完成: todolist.md 已创建，每项是原子化任务
+
+步骤5: 编码
+  工具: superpowers:test-driven-development
+  输入: todolist.md 中的任务
+  方式: RED → GREEN → REFACTOR，按 todolist 逐项推进
+  完成: 所有任务 ✅，测试全绿
+
+步骤6: 审查
+  工具: /review + /security-review
+  输入: 步骤5的代码变更
+  完成: 🔴 CHECKPOINT — 检查清单全通过
+
+步骤7: 发布
+  工具: gf + /opsx:archive
+  输入: 审查通过的代码
+  完成: 代码已推送，规格已归档
 ```
 
-## 路由裁决表
+### 每一步完成后
 
-| 任务 | 工具 |
-|------|------|
-| 追问需求细节 | `grill-with-docs` skill |
-| 把需求写成规格 | `/opsx:propose` |
-| 方案设计 | `superpowers:brainstorming` |
-| **人类确认** | **展示方案 → 等待"可以"（铁律）** |
-| 写实施计划 | `superpowers:writing-plans` |
-| 写代码（TDD） | `superpowers:test-driven-development` |
-| 并行任务执行 | `superpowers:subagent-driven-development` |
-| 调试 bug | `superpowers:systematic-debugging` |
-| 文档审查 | `grill-with-docs` skill |
-| 代码审查 | `/review` |
-| 安全审查 | `/security-review` |
-| 完成前自检 | `superpowers:verification-before-completion` |
-| 收尾分支 | `superpowers:finishing-a-development-branch` |
-| Git 提交/合并 | `gf` skill |
-| 归档 | `/opsx:archive` |
+1. 勾选 `todolist.md` 中对应任务
+2. 确认完成标志已达成
+3. 进入下一步
 
 ## 🔴 CHECKPOINT 门禁
 
-### 🔴 CHECKPOINT 步骤3→4：人类确认
-方案设计完成后，必须向用户展示方案并等待明确确认，才能进入计划拆分。
-未获确认 = 🛑 STOP，禁止进入步骤4/5。
+### 步骤3→4：人类确认（铁律）
+方案设计完成后，向用户展示方案并等待明确确认。未确认 = 🛑 STOP。
 
-### 🔴 CHECKPOINT 步骤6→7：提交前检查清单
-- [ ] TDD 测试通过
-- [ ] /review 已通过，无严重问题
-- [ ] /security-review 已通过（auth/finance/system 模块）
-- [ ] 文档反写：改了什么文档就同步了什么
-- [ ] todolist.md 中对应任务已勾选
+### 步骤6→7：提交前检查清单
+- [ ] TDD 测试全部通过
+- [ ] /review 通过，无 CRITICAL 问题
+- [ ] /security-review 通过（涉及 auth/finance/system 时强制）
+- [ ] 文档变更已同步
+- [ ] todolist.md 对应任务全部 ✅
 
-全部通过 = 可以提交。任一未通过 = 🛑 STOP，先补该项。
+全部通过 → 提交。任一未通过 → 🛑 STOP，先补。
+
+## todolist.md 规约
+
+- **创建时机**：唯一在步骤4完成后，从 writing-plans 的计划中提取可勾选任务
+- **格式**：每行 `- [ ] 任务描述`，已完成改为 `- [x]`
+- **粒度**：一项 = 一个可独立验证的原子任务
+- **生命周期**：所有任务 ✅ + 步骤7归档完成 → 删除
+- **gitignore**：创建时确认已加入 `.gitignore`
+- **损坏处理**：格式无法解析时，根据 git log 和 openspec 目录推断当前进度，从推断的步骤重新开始
 
 ## 会话恢复
 
-1. 读 `todolist.md` → 找第一个未勾选任务
-2. 读 `git log -1` → 确认上次提交
-3. 从第一个未完成步骤继续
+1. 读 `todolist.md`
+2. 不存在 → 步骤1
+3. 存在 + 有 `- [ ]` → 对应步骤继续
+4. 存在 + 全 `- [x]` → 检查归档 → 删除或提示
 
-## 安全规范
+## 用户绕路处理
 
-### 提交前安全检查
-- [ ] 无硬编码密钥（API Key、密码、Token）
-- [ ] 所有用户输入已校验
-- [ ] SQL 注入防护（参数化查询）
-- [ ] XSS 防护（输出转义）
-- [ ] 身份认证/授权已验证
-- [ ] 错误消息不泄露敏感数据
+用户可能说"直接写代码"、"跳过设计"、"这步不用做了"。处理原则：
 
-### 常见漏洞防范
-| 漏洞 | 防范方式 |
-|------|----------|
-| SQL 注入 | ORM / 参数化查询 |
-| XSS | 输出转义、CSP 头 |
-| CSRF | SameSite Cookie、CSRF Token |
-| IDOR (越权) | 每次操作验证资源所有权 |
-| 敏感数据泄露 | 日志脱敏、错误信息泛化 |
+| 用户意图 | 处理 |
+|---------|------|
+| "跳过步骤X" | 说明该步为什么不可跳过（一句话），若用户坚持则记录到 todolist.md 顶部注释 |
+| "这步已经做过了" | 验证产物是否存在（如 proposal.md、方案文档），存在即可跳过 |
+| "换个方案" | 回到步骤3，重新 brainstorm |
+| "需求变了" | 回到步骤1，追加 todolist.md 顶部注释说明变更 |
+| 步骤中被打断 | 下次会话通过 todolist.md 恢复，从当前步骤继续 |
 
-## 测试规范
+## 失败处理
 
-### 最低覆盖率：80%
-- TDD 铁律：没有失败测试前不写实现代码
-- RED → GREEN → REFACTOR
-
-### 命名规范
-```
-{filename}.test.ts          # 单元/集成测试
-{filename}.spec.ts          # E2E 测试
-it('should {expected} when {condition}')
-```
-
-### 反模式（禁止）
-- ❌ 使用 any 绕过类型检查
-- ❌ 测试实现细节而非行为
-- ✅ 测试公开行为
-
-## 失败处理（每步 fallback）
-
-| 步骤 | 失败场景 | 处理方式 |
-|------|---------|---------|
-| 1. 追问 | 用户问题太模糊、回答不清 | 追问 3 轮后仍无结论 → 继续追问直到用户给出确定答案 |
+| 步骤 | 失败场景 | 处理 |
+|------|---------|------|
+| 1. 追问 | 需求模糊 | 追问直到清晰，超过3轮无结论 → 列出待澄清项让用户逐条确认 |
 | 2. 规格 | OpenSpec 不可用 | 手动创建 `openspec/changes/<name>/`，手写 proposal.md |
-| 3. 设计 | 方案选择分歧大 | 列出 2 个对比方案的优劣，让用户选一个；用户不选则默认简单方案 |
-| 4. 拆分 | 任务粒度太大 | 继续拆到每个任务 ≤5 分钟、单文件可完成 |
-| 5. 编码 | 测试写不出/跑不过 | 先写最小实现让测试通过，再逐步加边界；不跳过 TDD |
-| 6. 审查 | /review 发现严重问题 | 修完问题后重新跑 /review，最多循环 2 次 |
-| 7. 发布 | gf 合并冲突 | 显示冲突文件 → 用户手动解决 → 回复"完成"后继续 |
+| 3. 设计 | 方案分歧大 | 列2个对比方案优劣，用户选；用户不选则默认简单方案 |
+| 4. 拆分 | 任务粒度过大 | 继续拆到每项 ≤5 分钟、单文件可完成 |
+| 5. 编码 | 测试写不出 | 先写最小实现让测试通过，再逐步加边界；不跳过 TDD |
+| 6. 审查 | /review 发现严重问题 | 修复后重跑 /review，最多循环 2 次 |
+| 7. 发布 | gf 合并冲突 | 显示冲突文件 → 用户解决 → 回复"完成"后继续 |
 
-## 🔴 反例黑名单（不要做的事）
+## 🔴 反例（绝不）
 
-| # | 反模式 | 为什么不要做 |
-|---|--------|-------------|
-| 1 | **跳过人类确认直接写代码** | 方案没对齐，写完发现方向错了 |
-| 2 | **没有 TDD 直接写实现** | 没有测试的代码 = 不可信的代码 |
-| 3 | **步骤没完成就跳到下一步** | 欠的技术债下一步加倍偿还 |
-| 4 | **/review 有 CRITICAL 仍然 commit** | 带病上线 = 生产环境埋雷 |
-| 5 | **gf 合并不确认目标分支就执行** | 可能误合到错误分支 |
-| 6 | **跳过步骤1-2 直接写代码** | 需求不清就动手 = 必返工 |
-| 7 | **硬编码密钥/密码** | 代码泄露 = 安全事故 |
-
+| # | 反模式 | 原因 |
+|---|--------|------|
+| 1 | 跳过人类确认直接写代码 | 方向可能全错 |
+| 2 | 不写测试直接写实现 | 没测试 = 不可信 |
+| 3 | 步骤未完成就跳下一步 | 技术债叠加 |
+| 4 | /review 有 CRITICAL 仍 commit | 生产埋雷 |
+| 5 | 跳过步骤1-4 直接写代码 | 需求不清 = 必返工 |
+| 6 | 硬编码密钥/密码 | 安全事故 |
