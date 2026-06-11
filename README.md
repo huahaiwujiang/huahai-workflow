@@ -1,4 +1,4 @@
-# seven-step — 6步工作流
+# huahai-workflow — 开发工作流
 
 从追问到发布的完整开发链路，面向 Claude Code 的项目级开发工作流。
 
@@ -8,8 +8,8 @@
 
 | Skill | 作用 |
 |-------|------|
-| `seven-step` | 核心工作流。6步链路编排：追问→设计→拆分→编码→审查→发布。内置 `gf` git 流程。 |
-| `seven-step-setup` | 依赖检测。检查 superpowers、grill-with-docs 是否安装，缺失时给出安装命令。 |
+| `huahai-workflow` | 核心工作流。追问→设计→拆分→编码→审查→发布。内置 `gf` git 流程。 |
+| `huahai-workflow-setup` | 依赖检测。检查 superpowers、grill-with-docs 是否安装，缺失时给出安装命令。 |
 
 ## 安装
 
@@ -25,8 +25,8 @@ git clone git@github.com:huahaiwujiang/huahai-workflow.git
 
 ```bash
 # 在目标项目根目录
-cp -r huahai-workflow/seven-step .claude/skills/seven-step
-cp -r huahai-workflow/seven-step-setup .claude/skills/seven-step-setup
+cp -r huahai-workflow/huahai-workflow .claude/skills/huahai-workflow
+cp -r huahai-workflow/huahai-workflow-setup .claude/skills/huahai-workflow-setup
 ```
 
 ### 3. 检查依赖
@@ -40,14 +40,14 @@ cp -r huahai-workflow/seven-step-setup .claude/skills/seven-step-setup
 或手动运行：
 
 ```bash
-node .claude/skills/seven-step-setup/scripts/check-deps.mjs
+node .claude/skills/huahai-workflow-setup/scripts/check-deps.mjs
 ```
 
 缺失的依赖按提示逐个安装。完成后 `/reload-skills`。
 
 ## 使用
 
-安装完成后，AI 每次会话自动加载 seven-step，按 6 步链路推进：
+安装完成后，AI 每次会话自动加载 huahai-workflow，按链路推进：
 
 ```
 步骤1: 追问   → Skill("grill-with-docs")              纯业务视角，WHAT 不 HOW
@@ -60,7 +60,7 @@ node .claude/skills/seven-step-setup/scripts/check-deps.mjs
 步骤6: 发布   → Skill("gf")                            Git 提交 + 推送
 ```
 
-开工时 AI 自动读 `todolist.md`（步骤3创建），从上次中断处继续。
+开工时 AI 自动读 `todolist.md`（拆分阶段创建），从上次中断处继续。
 
 ## 依赖
 

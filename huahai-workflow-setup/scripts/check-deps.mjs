@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-// seven-step 依赖检测
+// huahai-workflow 依赖检测
 // 检查 superpowers + grill-me / grill-with-docs
 
 import { existsSync } from 'node:fs';
@@ -36,13 +36,13 @@ const checks = [
 const failed = checks.filter(c => !c.paths.some(p => existsSync(p)));
 
 if (failed.length === 0) {
-  console.log('✅ seven-step 所有依赖已就绪');
+  console.log('✅ huahai-workflow 所有依赖已就绪');
   process.exit(0);
 }
 
 console.log('');
 console.log('══════════════════════════════════════════════');
-console.log('  🔧 seven-step 依赖检测');
+console.log('  🔧 huahai-workflow 依赖检测');
 console.log('══════════════════════════════════════════════');
 console.log('');
 console.log(`❌ 缺少 ${failed.length} 个依赖：`);
