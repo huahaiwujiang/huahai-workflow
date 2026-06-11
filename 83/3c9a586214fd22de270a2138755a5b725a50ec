@@ -1,0 +1,34 @@
+CLAUDE.md
+  1a56f6633aec3fb9 7,12-15,20-21,23,25,30
+huahai-workflow/SKILL.md
+  1a56f6633aec3fb9 2-3,6,14,17-18,21,31,35,55,72,75,86-87,93,100,112-113,135-136
+huahai-workflow-setup/scripts/check-deps.mjs
+  1a56f6633aec3fb9 3,39,45
+huahai-workflow-setup/SKILL.md
+  1a56f6633aec3fb9 2-3,6,8,15,31-33,39,45
+huahai-workflow/gf/SKILL.md
+  1a56f6633aec3fb9 112
+README.md
+  1a56f6633aec3fb9 1,11-12,28-29,43,50,63
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "833c9a586214fd22de270a2138755a5b725a50ec",
+  "prompts": {
+    "1a56f6633aec3fb9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d1cef045-9452-4d31-823a-654793647531",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "huahai",
+      "messages": [],
+      "total_additions": 546,
+      "total_deletions": 490,
+      "accepted_lines": 506,
+      "overriden_lines": 0,
+      "messages_url": "https://git-ai.hsjdata.com/cas/ced9d7daac9af4e95b31c1624f83a27b060b44ec32dc3bd9ca8b4304a3153c11"
+    }
+  }
+}
