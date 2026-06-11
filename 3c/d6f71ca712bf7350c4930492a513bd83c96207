@@ -1,0 +1,26 @@
+README.md
+  1a56f6633aec3fb9 53-55,57-59,61
+seven-step/SKILL.md
+  1a56f6633aec3fb9 27,30,34,41,47,54,59-61,66,84-85,129,133,143,145
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "3cd6f71ca712bf7350c4930492a513bd83c96207",
+  "prompts": {
+    "1a56f6633aec3fb9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d1cef045-9452-4d31-823a-654793647531",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "huahai",
+      "messages": [],
+      "total_additions": 23,
+      "total_deletions": 22,
+      "accepted_lines": 23,
+      "overriden_lines": 0,
+      "messages_url": "https://git-ai.hsjdata.com/cas/6df8ac918cfee90b355017d244dd8960e2a768738c7e14e49e5989317d144886"
+    }
+  }
+}
