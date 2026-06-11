@@ -24,45 +24,46 @@ description: 7步开发工作流——从需求追问到代码发布。当用户
 
 ```
 步骤1: 追问
-  工具: grill-with-docs
+  🔴 强制: Skill("grill-with-docs") — 加载后严格遵循其指令
   输入: 用户提供的需求文档/描述
   输出: 澄清后的需求理解
-  规则: 只读用户给的文档，只问问题。🚫 不看代码、不搜代码库、不探索项目结构
+  规则: 只读项目文档，不看代码
   完成: 用户确认需求无误
 
 步骤2: 规格
-  工具: /opsx:propose
+  🔴 强制: Skill("opsx:propose") — 加载后严格遵循其指令
   输入: 步骤1的需求理解
   规则: 开始前先问用户「openspec 输出到哪个目录？」（默认 /openspec），记录到 todolist.md 顶部
   输出: <用户指定目录>/openspec/changes/<name>/ 下的规格文档
   完成: proposal.md 存在
 
 步骤3: 设计
-  工具: superpowers:brainstorming
+  🔴 强制: Skill("superpowers:brainstorming") — 加载后严格遵循其指令
   输入: 步骤2的规格文档
   输出: 技术方案
   完成: 🔴 CHECKPOINT — 展示方案，等待用户确认
 
 步骤4: 拆分
-  工具: superpowers:writing-plans
+  🔴 强制: Skill("superpowers:writing-plans") — 加载后严格遵循其指令
   输入: 确认后的方案
   规则: 开始前先问用户「实施计划输出到哪个目录？」（默认 /plan），记录到 todolist.md 顶部
   输出: <用户指定目录>/ 下的实施计划 + todolist.md（从计划中提取可勾选清单）
   完成: todolist.md 已创建，每项是原子化任务
 
 步骤5: 编码
-  工具: superpowers:test-driven-development（非代码任务可跳过 TDD）
+  🔴 强制: 先判断任务类型——纯配置/文档/typo 修复直接改；其余代码任务必须 Skill("superpowers:test-driven-development")，走 RED → GREEN → REFACTOR
   输入: todolist.md 中的任务
-  方式: 先判断任务类型——纯配置/文档/typo 修复直接改，其余代码任务走 RED → GREEN → REFACTOR
   完成: 所有任务 ✅，代码类任务测试全绿
 
 步骤6: 审查
-  工具: /code-review + /security-review
+  🔴 强制（两步都要跑，不可跳过）:
+    1. Skill("code-review") — diff 审查，找 correctness bugs + reuse/simplification/efficiency
+    2. Skill("security-review") — 安全审查
   输入: 步骤5的代码变更
   完成: 🔴 CHECKPOINT — 检查清单全通过
 
 步骤7: 发布
-  工具: gf + /opsx:archive
+  🔴 强制: Skill("gf") 完成 git 流程，然后 Skill("opsx:archive") 归档规格
   输入: 审查通过的代码
   完成: 代码已推送，规格已归档
 ```
@@ -80,8 +81,8 @@ description: 7步开发工作流——从需求追问到代码发布。当用户
 
 ### 步骤6→7：提交前检查清单
 - [ ] TDD 测试全部通过
-- [ ] /code-review 通过，无 CRITICAL 问题
-- [ ] /security-review 通过（涉及 auth/finance/system 时强制）
+- [ ] Skill("code-review") 通过，无 CRITICAL 问题
+- [ ] Skill("security-review") 通过（涉及 auth/finance/system 时强制）
 - [ ] 文档变更已同步
 - [ ] todolist.md 对应任务全部 ✅
 
@@ -125,11 +126,11 @@ description: 7步开发工作流——从需求追问到代码发布。当用户
 | 步骤 | 触发条件 | 一线修复 | 仍失败兜底 |
 |------|---------|---------|-----------|
 | 1. 追问 | 需求模糊 | 追问直到清晰 | 超过3轮无结论 → 列出待澄清项让用户逐条确认 |
-| 2. 规格 | OpenSpec 命令不可用或项目未 init | 执行 `/seven-step-setup 检查依赖`，安装缺失依赖后 `openspec init --tools claude` | 手动创建 `openspec/changes/<name>/`，手写 proposal.md |
+| 2. 规格 | OpenSpec 命令不可用或项目未 init | 执行 `/seven-step-setup 检查依赖`，安装缺失依赖后 `openspec init --tools claude`，然后重试 Skill("opsx:propose") | 手动创建 `openspec/changes/<name>/`，手写 proposal.md |
 | 3. 设计 | 方案分歧大 | 列2个对比方案优劣，让用户选 | 用户不选 → 默认简单方案，记录理由到 todolist.md |
 | 4. 拆分 | 任务粒度过大 | 继续拆到每项 ≤5 分钟、单文件可完成 | 仍过大 → 标记需人工拆分 |
 | 5. 编码 | 测试写不出 | 先写最小实现让测试通过 | 再逐步加边界，每加一个跑全量；非代码任务跳过 |
-| 6. 审查 | /code-review 发现严重问题 | 修复后重跑 /code-review | 最多循环 2 次，仍不过 → 标记已知风险，用户决策 |
+| 6. 审查 | Skill("code-review") 发现严重问题 | 修复后重跑 Skill("code-review") | 最多循环 2 次，仍不过 → 标记已知风险，用户决策 |
 | 7. 发布 | gf 合并冲突 | 显示冲突文件，等待用户手动解决 | 解决失败 → `git merge --abort`，记录冲突到 todolist.md |
 
 ## 🔴 反例（绝不）
@@ -139,6 +140,6 @@ description: 7步开发工作流——从需求追问到代码发布。当用户
 | 1 | 跳过人类确认直接写代码 | 方向可能全错 |
 | 2 | 不写测试直接写实现 | 没测试 = 不可信 |
 | 3 | 步骤未完成就跳下一步 | 技术债叠加 |
-| 4 | /code-review 有 CRITICAL 仍 commit | 生产埋雷 |
+| 4 | Skill("code-review") 有 CRITICAL 仍 commit | 生产埋雷 |
 | 5 | 跳过步骤1-4 直接写代码 | 需求不清 = 必返工 |
-| 6 | 步骤1就搜索/阅读代码库 | 先理解文档，后看代码。步骤1只看用户给的文档 |
+| 6 | 步骤1就搜索/阅读代码库 | 先理解文档，后看代码。步骤1只读文档不看代码 |

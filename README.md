@@ -50,15 +50,15 @@ node .claude/skills/seven-step-setup/scripts/check-deps.mjs
 安装完成后，AI 每次会话自动加载 seven-step，按 7 步链路推进：
 
 ```
-步骤1: 追问   → grill-with-docs    基于文档追问，对齐理解
-步骤2: 规格   → /opsx:propose      写成规格文档
-步骤3: 设计   → brainstorming      方案设计
+步骤1: 追问   → Skill("grill-with-docs")         基于文档追问，对齐理解
+步骤2: 规格   → Skill("opsx:propose")             写成规格文档
+步骤3: 设计   → Skill("superpowers:brainstorming") 方案设计
      🔴 CHECKPOINT: 展示方案 → 等待人类确认
-步骤4: 拆分   → writing-plans      拆成实施计划
-步骤5: 编码   → TDD                RED → GREEN → REFACTOR
-步骤6: 审查   → /review + /security-review
+步骤4: 拆分   → Skill("superpowers:writing-plans") 拆成实施计划
+步骤5: 编码   → Skill("superpowers:test-driven-development") RED → GREEN → REFACTOR
+步骤6: 审查   → Skill("code-review") + Skill("security-review")
      🔴 CHECKPOINT: 检查清单全通过才能 commit
-步骤7: 发布   → gf + /opsx:archive  Git 提交 + 归档
+步骤7: 发布   → Skill("gf") + Skill("opsx:archive")  Git 提交 + 归档
 ```
 
 开工时 AI 自动读 `todolist.md`（首次自动创建），从上次中断处继续。
