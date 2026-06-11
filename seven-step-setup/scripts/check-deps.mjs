@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 // seven-step 依赖检测
-// 检查 superpowers + OpenSpec + mattpocock/skills
+// 检查 superpowers + grill-me / grill-with-docs
 
 import { existsSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -12,25 +12,12 @@ const home = homedir();
 const skillsDir = join(home, '.claude', 'skills');
 const pluginsDir = join(home, '.claude', 'plugins', 'cache');
 
-// 动态获取 npm 全局路径
-let npmRoot = '';
-try { npmRoot = execSync('npm root -g', { encoding: 'utf8', timeout: 5000 }).trim(); } catch {}
-
 const checks = [
   {
     name: 'superpowers',
     paths: [join(pluginsDir, 'claude-plugins-official', 'superpowers')],
     install: 'claude plugin install superpowers@superpowers-marketplace',
     desc: 'brainstorming / writing-plans / TDD / debugging',
-  },
-  {
-    name: 'OpenSpec',
-    paths: [
-      join(home, 'AppData', 'Roaming', 'openspec'),
-      npmRoot ? join(npmRoot, '@fission-ai', 'openspec') : '',
-    ].filter(Boolean),
-    install: 'npm install -g @fission-ai/openspec@latest',
-    desc: '/opsx:propose / /opsx:explore / /opsx:archive',
   },
   {
     name: 'grill-me',

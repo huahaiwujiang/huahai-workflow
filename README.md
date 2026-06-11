@@ -1,4 +1,4 @@
-# seven-step — 7步工作流
+# seven-step — 6步工作流
 
 从追问到发布的完整开发链路，面向 Claude Code 的项目级开发工作流。
 
@@ -8,8 +8,8 @@
 
 | Skill | 作用 |
 |-------|------|
-| `seven-step` | 核心工作流。7步链路编排：追问→规格→设计→拆分→编码→审查→发布。内置 `gf` git 流程。 |
-| `seven-step-setup` | 依赖检测。检查 superpowers、OpenSpec、grill-with-docs 是否安装，缺失时给出安装命令。 |
+| `seven-step` | 核心工作流。6步链路编排：追问→设计→拆分→编码→审查→发布。内置 `gf` git 流程。 |
+| `seven-step-setup` | 依赖检测。检查 superpowers、grill-with-docs 是否安装，缺失时给出安装命令。 |
 
 ## 安装
 
@@ -47,28 +47,26 @@ node .claude/skills/seven-step-setup/scripts/check-deps.mjs
 
 ## 使用
 
-安装完成后，AI 每次会话自动加载 seven-step，按 7 步链路推进：
+安装完成后，AI 每次会话自动加载 seven-step，按 6 步链路推进：
 
 ```
-步骤1: 追问   → Skill("grill-with-docs")         基于文档追问，对齐理解
-步骤2: 规格   → Skill("opsx:propose")             写成规格文档
-步骤3: 设计   → Skill("superpowers:brainstorming") 方案设计
+步骤1: 追问   → Skill("grill-with-docs")              纯业务视角，WHAT 不 HOW
+步骤2: 设计   → Skill("superpowers:brainstorming")     技术方案，HOW
      🔴 CHECKPOINT: 展示方案 → 等待人类确认
-步骤4: 拆分   → Skill("superpowers:writing-plans") 拆成实施计划
-步骤5: 编码   → Skill("superpowers:test-driven-development") RED → GREEN → REFACTOR
-步骤6: 审查   → Skill("code-review") + Skill("security-review")
+步骤3: 拆分   → Skill("superpowers:writing-plans")     拆成实施计划 + todolist.md
+步骤4: 编码   → Skill("superpowers:test-driven-development") RED → GREEN → REFACTOR
+步骤5: 审查   → Skill("code-review") + Skill("security-review")
      🔴 CHECKPOINT: 检查清单全通过才能 commit
-步骤7: 发布   → Skill("gf") + Skill("opsx:archive")  Git 提交 + 归档
+步骤6: 发布   → Skill("gf")                            Git 提交 + 推送
 ```
 
-开工时 AI 自动读 `todolist.md`（首次自动创建），从上次中断处继续。
+开工时 AI 自动读 `todolist.md`（步骤3创建），从上次中断处继续。
 
 ## 依赖
 
 | 依赖 | 用途 | 安装命令 |
 |------|------|---------|
 | superpowers | 设计/拆分/编码 | `claude plugin install superpowers@superpowers-marketplace` |
-| OpenSpec | 规格/归档 | `npm install -g @fission-ai/openspec@latest` |
 | grill-with-docs | 需求追问 + 文档审查 | `npx skills@latest add mattpocock/skills -g -y -s grill-me -s grill-with-docs` |
 
 ## 许可
