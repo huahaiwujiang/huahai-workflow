@@ -1,0 +1,53 @@
+README.md
+  9dc57a5b7d5f3648 3,11-12,30,55-60,62-64,68-70,73-86
+huahai-workflow-setup/SKILL.md
+  ea25d6e26b62b251 3
+CLAUDE.md
+  9dc57a5b7d5f3648 12-13,21,23-26
+huahai-workflow/SKILL.md
+  ea25d6e26b62b251 3,10,38,130-135,205
+  9dc57a5b7d5f3648 8,15-18,21-22,27-29,33,35-37,39,42-47,50-56,59-61,65-66,71,74-80,85,92-95,101-102,106,108-110,112-119,121,123-126,128-129,136-163,168,170,179-180,188-190,194,206
+huahai-workflow-gf/SKILL.md
+  ea25d6e26b62b251 3,8,14,33,38-40,43-50,52-53,116,149,157-159,167
+  9dc57a5b7d5f3648 2
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "6d67107aa490765f08ce75e34598926acd9393c9",
+  "prompts": {
+    "9dc57a5b7d5f3648": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4b8314df-980d-4e66-b614-9c7e53dd358a",
+        "model": "deepseek-v4-pro"
+      },
+      "human_author": "huahai",
+      "messages": [],
+      "total_additions": 234,
+      "total_deletions": 154,
+      "accepted_lines": 143,
+      "overriden_lines": 0,
+      "messages_url": "https://git-ai.hsjdata.com/cas/7daf78ebba902e0f5fca40aa492e1edf2366e0170416a676ce43447cf43ea588"
+    },
+    "ea25d6e26b62b251": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8fe4e80d-801c-4f78-aaf9-6393dfa7123b",
+        "model": "glm-5.1"
+      },
+      "human_author": "huahai",
+      "messages": [],
+      "total_additions": 34,
+      "total_deletions": 66,
+      "accepted_lines": 34,
+      "overriden_lines": 0,
+      "messages_url": "https://git-ai.hsjdata.com/cas/bbcbaebed4b1f4ca7eb0c4fa918c3363ec2afa10f46ee529120b2b9afcdabc4f"
+    }
+  },
+  "humans": {
+    "h_20193a38825318": {
+      "author": "huahai"
+    }
+  }
+}
