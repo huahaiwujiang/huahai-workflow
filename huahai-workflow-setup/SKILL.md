@@ -1,6 +1,6 @@
 ---
 name: huahai-workflow-setup
-description: 检测 huahai-workflow 工作流所需的依赖是否安装到位，缺失时自动执行安装。在首次使用或换新机器时运行。触发词：检查依赖、setup、环境检测、依赖安装。
+description: 工作流依赖检测——检查 superpowers/grill-me 等依赖是否就绪。当用户说 检查依赖、setup、环境检测 时触发。
 ---
 
 # huahai-workflow-setup
